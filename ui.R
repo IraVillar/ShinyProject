@@ -15,7 +15,7 @@ shinyUI(
                           tabItem(tabName="AboutMe",
                                   h1("About Me", align = "center"),
                                   fluidRow(img(src="")),
-                                  p("Ira is Ira",align="center")),
+                                  p("Ira is Ira Villar",align="center")),
                           
                           tabItem(tabName="AbouttheProject",
                                   h1("About the Project", align = "center"),
