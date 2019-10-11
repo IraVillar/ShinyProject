@@ -6,7 +6,21 @@ library(rsconnect)
 library(scales)
 library(googleVis)
 library(DT)
+library(lubridate)
 library(shinydashboard)
+
+
+# Number of Screens Cleaning ####
+
+ns = read.csv("NumberofScreens.csv",stringsAsFactors = FALSE)
+ns = tbl_df(ns)
+ns = ns %>% 
+  filter(Year > 2004) %>% 
+  select(Year,Number.of.screens)
+
+ns$Number.of.screens = Number.of.screens = as.numeric(gsub("[[:punct:]]","",ns$Number.of.screens))
+
+ns$Number.of.screens[ns$Year == 2012] = ((ns$Number.of.screens[ns$Year == 2011] + ns$Number.of.screens[ns$Year == 2013])/2)
 
 # China Cleaning ####
 co = read.csv("ChinaOpening.csv",stringsAsFactors = FALSE)
@@ -130,31 +144,42 @@ UsChinaAlltime = tbl_df(UsChinaAlltime)
 UsChinaAlltime = UsChinaAlltime %>% 
   mutate(all_other_overseas_gross = Total_Worldwide_Gross - (Total_Chinese_Gross + Domestic))
 
-UsChinaAlltime = UsChinaAlltime %>% 
+UsChinaAlltime2 = UsChinaAlltime %>% 
   gather(key = "OverseasTotalRegion",value ="Overseasfactor",Total_Chinese_Gross,all_other_overseas_gross ) %>% 
   filter(Overseasfactor != is.na(Overseasfactor))
  
 
 UsChinaAlltime
-UsChinaAlltime  %>% 
-  select(Year,Total_Worldwide_Gross,Domestic,OverseasTotalRegion,Overseasfactor,Overseas) %>%
+UsChinaAlltime2  %>% 
+  select(Title, Year,Total_Worldwide_Gross,Domestic,OverseasTotalRegion,Overseasfactor,Overseas) %>%
   group_by(Year) %>%
   mutate(TWGperYear = sum(Total_Worldwide_Gross)) %>% 
   group_by(Year, OverseasTotalRegion, TWGperYear)-> temp
 temp = tbl_df(temp)
 
-temp %>% 
-  filter(OverseasTotalRegion == "Total_Chinese_Gross") %>% 
-  select(Overseasfactor) ->ChineseMean
-  
-temp %>% 
-  filter(OverseasTotalRegion=="all_other_overseas_gross") %>% 
-  select(Overseasfactor)-> OverseasMean
 
-OverseasMean = as.vector(OverseasMean$Overseasfactor)
-ChineseMean = as.vector(ChineseMean$Overseasfactor)
-  
-t.test(ChineseMean,OverseasMean,alternative = "two.sided")
+UsChinaCompare %>% 
+  group_by(Year) %>% 
+  filter(Year %in% c(2006:2019)) %>% 
+  mutate(Domestic_Total = sum(Domestic)) %>%
+  mutate(Chinese_Total = sum(Total_Chinese_Gross)) %>% 
+  filter(Domestic_Total != is.na(Domestic_Total)) %>%
+  arrange(Year) %>% 
+  select(Year,Domestic_Total,Chinese_Total)
+
+
+# temp %>% 
+#   filter(OverseasTotalRegion == "Total_Chinese_Gross") %>% 
+#   select(Overseasfactor) ->ChineseMean
+#   
+# temp %>% 
+#   filter(OverseasTotalRegion=="all_other_overseas_gross") %>% 
+#   select(Overseasfactor)-> OverseasMean
+# 
+# OverseasMean = as.vector(OverseasMean$Overseasfactor)
+# ChineseMean = as.vector(ChineseMean$Overseasfactor)
+#   
+# t.test(ChineseMean,OverseasMean,alternative = "two.sided")
 
 
 

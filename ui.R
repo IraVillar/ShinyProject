@@ -5,10 +5,10 @@ shinyUI(
                       dashboardSidebar(sidebarUserPanel(""),
                                        sidebarMenu(
                                          menuItem("About the Project", tabName = "AbouttheProject",icon=icon("info-circle")),
-                                         menuItem("AboutMe",tabName="AboutMe",icon=icon("address-card")),
-                                         menuItem("Bar",tabName = "Bar",icon=icon("database")),
-                                         menuItem("Pie",tabName = "Pie",icon=icon("chart-pie")),
-                                         menuItem("Line Chart",tabName = "LineChart",icon=icon("chart-line")),
+                                         menuItem("About Me",tabName="AboutMe",icon=icon("address-card")),
+                                         menuItem("Bar Chart",tabName = "Bar",icon=icon("database")),
+                                         menuItem("Pie Charts",tabName = "Pie",icon=icon("chart-pie")),
+                                         menuItem("Line Charts",tabName = "LineChart",icon=icon("chart-line")),
                                          menuItem("Conclusion",tabName = "Conclusion",icon=icon("film"))
                                          )),                                       
                 
@@ -56,7 +56,21 @@ shinyUI(
                                   
                                 ),
                           
-                          tabItem(tabName = "LineChart"),
+                          tabItem(tabName = "LineChart",
+                                  fluidRow(
+                                    
+                                    column(6,
+                                           sliderInput("YearRange", label = h3("Year Range\n for US/China Comparison"), min = 2006, 
+                                                       max = 2019, value = c(2006, 2019))
+                                    ),
+                                    column(6,
+                                           sliderInput("CinemaRange",label=h3("Year Range\n for Number of Cinemas"), min =2005,
+                                                       max = 2019, value = c(2005, 2019)))
+                                  ),
+                                  fluidRow(column(5, htmlOutput("Line")),
+                                           column(5, htmlOutput("CinemaLine")))
+                                  
+                                  ),
                           
                           tabItem(tabName = "Conclusion",
                                   h1("Conclusion", align = "center"),

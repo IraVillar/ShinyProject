@@ -74,9 +74,36 @@ shinyServer(function(input,output){
     
     
     gvisPieChart(data = percpieoverseas, labelvar = "OverseasTotalRegion", numvar = "sum.OverseasFactor.",
-                 options=list(title="Percentage of Overseas Gross per Year \n Values in Millions", height = 500)) 
-  })
-  
+                 options=list(title="Percentage of Overseas Gross per Year \n Values in Millions", height = 500))})
+    
+    output$Line <- renderGvis({
+      UsChinaCompare = UsChinaCompare %>% 
+        group_by(Year) %>% 
+        filter(Year %in% c(input$YearRange[1]:input$YearRange[2])) %>% 
+        mutate(Domestic_Total = sum(Domestic)) %>%
+        mutate(Chinese_Total = sum(Total_Chinese_Gross)) %>% 
+        filter(Domestic_Total != is.na(Domestic_Total)) %>%
+        arrange(Year) %>% 
+        select(Year,Domestic_Total,Chinese_Total)
+        
+                    gvisLineChart(data.frame(country=(UsChinaCompare$Year), 
+                                       DomesticTotal=(UsChinaCompare$Domestic_Total), 
+                                       ChineseTotal=(UsChinaCompare$Chinese_Total)),
+                                )
+    })
+    
+    
+    output$CinemaLine <- renderGvis({
+      ns = ns %>% 
+        filter(Year %in% c(input$CinemaRange[1]:input$CinemaRange[2])) %>% 
+        mutate(Year = as.character(Year))
+      
+      
+      
+      gvisLineChart(ns,
+                    )
+    })
+    
 
     
   
