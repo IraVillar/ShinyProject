@@ -1,5 +1,6 @@
 
 
+
 shinyServer(function(input, output) {
   output$BarChart <- renderGvis({
     UsChina %>%
@@ -48,7 +49,7 @@ shinyServer(function(input, output) {
     exceptChinadf = data.frame(rbind(overseas_others_df, domestic_opening),
                                stringsAsFactors = F)
     exceptChinadf = tbl_df(exceptChinadf)
-    exceptChinadf[nrow(exceptChinadf) + 1, ] = chinaoverall_df
+    exceptChinadf[nrow(exceptChinadf) + 1,] = chinaoverall_df
     
     percpie = exceptChinadf %>%
       select(-Year)
@@ -107,7 +108,7 @@ shinyServer(function(input, output) {
       Year = (UsChinaCompare$Year),
       DomesticTotal = (UsChinaCompare$Domestic_Total),
       ChineseTotal = (UsChinaCompare$Chinese_Total)
-    ),)
+    ), )
   })
   output$CinemaLine <- renderGvis({
     ns = ns %>%
@@ -116,42 +117,33 @@ shinyServer(function(input, output) {
     
     
     
-    gvisLineChart(ns,)
+    gvisLineChart(ns, )
   })
   
-  output$ScatterChart <- renderGvis({
-    gvisScatterChart(
-      data.frame(
-        country = (UsChinaCompare$Year),
-        DomesticTotal =
-          (UsChinaCompare$Domestic),
-        ChineseTotal =
-          (UsChinaCompare$Total_Chinese_Gross)),
-        options = list(
-          explorer = "{actions: ['dragToZoom',
-                                          'rightClickToReset'],
-                                maxZoomIn:0.05}",
-          chartArea = "{width:'85%',height:'80%'}",
-          hAxis = "{title: 'Year',
-                               titleTextStyle: {color: '#000000'}}",
-          vAxis = "{title: 'Amount in Millions',
-                               titleTextStyle: {color: '#000000'}}",
-          title = "Speed and stopping distances of cars in the 1920s",
-          width = 550,
-          height = 500,
-          legend = "none"
-        ),
-        chartid = "ZoomZoom"
-      )
+  output$ScatterChart <- renderPlotly({
+    UsChinaCompare2 = tbl_df(UsChinaCompare2)
     
+    UsChinaCompare2$Region = as.factor(UsChinaCompare2$Region)
+    
+    p = UsChinaCompare2 %>%
+      arrange(Return) %>%
+      select(Title, Region, Return,Domestic_Returns,China_Returns) %>% 
+      ggplot(aes(x = Title, y = Return)) + geom_point(aes(color=Region))
+      
+      ggplotly(p)
+      #p, tooltip = "text"
+      # style(g, text = UsChinaCompare2$Title)
   })
   
   
   
-  
-  
-  # output$table <- DT::renderDataTable(({
-  #   datatable(state_stat,rownames=FALSE) %>%
-  #     formatStyle(input$selected,
-  #                 background = "skyblue",fontweight="bold")
 })
+
+
+
+
+
+# output$table <- DT::renderDataTable(({
+#   datatable(state_stat,rownames=FALSE) %>%
+#     formatStyle(input$selected,
+#                 background = "skyblue",fontweight="bold")

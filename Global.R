@@ -8,6 +8,9 @@ library(googleVis)
 library(DT)
 library(lubridate)
 library(shinydashboard)
+library(plotly)
+library(gapminder)
+
 
 
 # Number of Screens Cleaning ####
@@ -117,20 +120,6 @@ UsChina %>%
   select(Rank = Rank.x,everything()) %>%
   filter(Total_Chinese_Gross != is.na(Total_Chinese_Gross)) -> UsChina
 
-# UsChina %>% 
-#   filter(Rank <=10) -> UsChinaFiltered
-# 
-# opendf=data.frame(Title=UsChinaFiltered$Title, 
-#               Domestic_Opening=UsChinaFiltered$Domestic.Opening, 
-#               Chinese_Opening=UsChinaFiltered$Chinese.Opening)
-
-
-UsChina %>% 
-  group_by(Title,Year) %>% 
-  filter(Year > 2009) %>% 
-  arrange(Year) %>%
-  ggplot(aes(x=Year,y=OpeningComparison)) + geom_point(aes(color=region),position = "jitter")
-
 
 # Overall Comparison ####
 
@@ -157,6 +146,10 @@ UsChinaAlltime2  %>%
   group_by(Year, OverseasTotalRegion, TWGperYear)-> temp
 temp = tbl_df(temp)
 
+UsChinaAlltime %>%
+  select(-Rank.y) -> UsChinaCompare
+  
+
 
 UsChinaCompare %>% 
   group_by(Year) %>% 
@@ -166,6 +159,13 @@ UsChinaCompare %>%
   filter(Domestic_Total != is.na(Domestic_Total)) %>%
   arrange(Year) %>% 
   select(Year,Domestic_Total,Chinese_Total)
+
+UsChinaCompare = UsChinaCompare %>% 
+  mutate(Domestic_Returns = Domestic) %>% 
+  mutate(China_Returns = Total_Chinese_Gross)
+
+UsChinaCompare2 = UsChinaCompare %>% 
+  gather(key = "Region", value = "Return", Total_Chinese_Gross, Domestic) 
 
 
 # temp %>% 
