@@ -9,6 +9,7 @@ shinyUI(
                                          menuItem("Bar Chart",tabName = "Bar",icon=icon("database")),
                                          menuItem("Pie Charts",tabName = "Pie",icon=icon("chart-pie")),
                                          menuItem("Line Charts",tabName = "LineChart",icon=icon("chart-line")),
+                                         menuItem("Scatter Charts",tabName = "Scatter",icon=icon("chart-scatter")),
                                          menuItem("Conclusion",tabName = "Conclusion",icon=icon("film"))
                                          )),                                       
                 
@@ -72,10 +73,21 @@ shinyUI(
                                   
                                   ),
                           
+                          tabItem(tabName = "Scatter",
+                                  fluidRow(htmlOutput("ScatterChart"))
+                                  
+                                  
+                                  
+                                  ),
+                          
                           tabItem(tabName = "Conclusion",
                                   h1("Conclusion", align = "center"),
                                   
-                                  p("This is the conclusion"))
+                                  p("This is the conclusion")
+                                  
+                                  )
+                          
+                         
                               
                           
                         ))
