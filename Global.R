@@ -142,46 +142,19 @@ UsChinaAlltime  %>%
   mutate(TWGperYear = sum(Total_Worldwide_Gross)) %>% 
   group_by(Year, OverseasTotalRegion, TWGperYear)-> temp
 temp = tbl_df(temp)
-temp
 
-# domestic_opening = temp %>%
-#   mutate(OverseasTotalRegion = "Domestic") %>% 
-#   select(Year,OverseasTotalRegion,Overseasfactor = Domestic) %>% 
-#   group_by(Year,OverseasTotalRegion) %>% 
-#   filter(Year == input$select) %>%
-#   filter(Overseasfactor != is.na(Overseasfactor)) %>% 
-#   summarise(sum(Overseasfactor))
-#   
-# 
-# chinaoverall_df = temp %>%
-#   group_by(Year, OverseasTotalRegion) %>% 
-#   filter(Year == input$select) %>% 
-#   filter(OverseasTotalRegion == "Total_Chinese_Gross") %>% 
-#   summarise(sum(Overseasfactor))
-# 
-# overseas_others_df = temp %>%
-#   group_by(Year, OverseasTotalRegion) %>% 
-#   filter(Year == input$select) %>% 
-#   filter(OverseasTotalRegion == "all_other_overseas_gross") %>% 
-#   summarise(sum(Overseasfactor))
-# 
-# exceptChinadf = data.frame(rbind(overseas_others_df,domestic_opening),stringsAsFactors = F)
-# exceptChinadf = tbl_df(exceptChinadf)
-# exceptChinadf[nrow(exceptChinadf)+1,] = chinaoverall_df
-# percpie = exceptChinadf %>% 
-#   select(-Year)
-# percpie = tbl_df(percpie)
-# 
-# percpieoverseas = data.frame(rbind(overseas_others_df,chinaoverall_df),stringsAsFactors = F)
-# percpieoverseas = tbl_df(percpieoverseas)
-# percpieoverseas = percpieoverseas %>% 
-#   select(-Year)
-# 
-# 
-# 
-# 
-# 
+temp %>% 
+  filter(OverseasTotalRegion == "Total_Chinese_Gross") %>% 
+  select(Overseasfactor) ->ChineseMean
+  
+temp %>% 
+  filter(OverseasTotalRegion=="all_other_overseas_gross") %>% 
+  select(Overseasfactor)-> OverseasMean
 
+OverseasMean = as.vector(OverseasMean$Overseasfactor)
+ChineseMean = as.vector(ChineseMean$Overseasfactor)
+  
+t.test(ChineseMean,OverseasMean,alternative = "two.sided")
 
 
 

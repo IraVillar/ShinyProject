@@ -48,7 +48,7 @@ shinyServer(function(input,output){
     
     
     gvisPieChart(data = percpie, labelvar = "OverseasTotalRegion", numvar = "sum.OverseasFactor.",
-                 options=list(title="Percentage of Total Gross", height = 500))
+                 options=list(title="Percentage of Total Gross per Year \n Values in Millions", height = 500))
     
     })
   
@@ -74,7 +74,7 @@ shinyServer(function(input,output){
     
     
     gvisPieChart(data = percpieoverseas, labelvar = "OverseasTotalRegion", numvar = "sum.OverseasFactor.",
-                 options=list(title="Percentage of Overseas Gross", height = 500)) 
+                 options=list(title="Percentage of Overseas Gross per Year \n Values in Millions", height = 500)) 
   })
   
 
