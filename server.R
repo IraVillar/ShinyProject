@@ -132,6 +132,10 @@ shinyServer(function(input, output) {
       chartid="ZoomZoom")
   })
   
+  output$table <- DT::renderDataTable({
+    datatable(cs) 
+  })
+   
   output$ScatterChart <- renderPlotly({
     UsChinaCompare2 = tbl_df(UsChinaCompare2)
     
@@ -160,7 +164,4 @@ shinyServer(function(input, output) {
 
 
 
-# output$table <- DT::renderDataTable(({
-#   datatable(state_stat,rownames=FALSE) %>%
-#     formatStyle(input$selected,
-#                 background = "skyblue",fontweight="bold")
+

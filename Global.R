@@ -20,7 +20,13 @@ cs = cs %>% select(-2018)
 cs = t(cs)
 cs = data.frame(cs) %>%
   filter(Indicators != is.na(Indicators)) %>%
-  arrange(Indicators)
+  arrange(Indicators) %>% 
+  select(-Number.of.Feature.Film.Studios.unit. ,
+         Feature_Films = Number.of.Feature.Films.film.,
+         Cartoons = Number.of.Cartoons.film.,
+         Science_Films = Number.of.Popular.Science.Films.film.,
+         Documentaries = Number.of.Documentary.Films.film.,
+         - Number.of.Special.Films.reel.)
 class(cs)
 
 

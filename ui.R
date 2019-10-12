@@ -6,18 +6,18 @@ shinyUI(
                                        sidebarMenu(
                                          menuItem("About the Project", tabName = "AbouttheProject",icon=icon("info-circle")),
                                          menuItem("About Me",tabName="AboutMe",icon=icon("address-card")),
-                                         menuItem("Bar Chart",tabName = "Bar",icon=icon("database")),
+                                         menuItem("Statistics",tabName = "Stats",icon=icon("table")),
                                          menuItem("Pie Charts",tabName = "Pie",icon=icon("chart-pie")),
+                                         menuItem("Bar Chart",tabName = "Bar",icon=icon("database")),
                                          menuItem("Line Charts",tabName = "LineChart",icon=icon("chart-line")),
                                          menuItem("Scatter Charts",tabName = "Scatter",icon=icon("dot-circle")),
-                                         menuItem("Statistics",tabName = "Stats",icon=icon("table")),
                                          menuItem("Conclusion",tabName = "Conclusion",icon=icon("film"))
                                          )),                                       
                 
                       dashboardBody(
                         tabItems(
                           tabItem(tabName="AbouttheProject",
-                                  h1("About the Project", align = "center"),
+                                  h1("Hollywood Movies and China", align = "center"),
                                   
                                   fluidRow(img(src='ManwatchingTv.jpg',width="310",height="180", align = "center")),
                                   
@@ -83,7 +83,10 @@ shinyUI(
                                   
                           tabItem(tabName = "Stats",
                                   h3("Some Statistics on the Chinese Film Industry"),
+                                  fluidRow(column(6, DT::dataTableOutput("table"))),
                                   fluidRow(htmlOutput("StatChart"))
+                                  
+                                  
                                   
                                   ),
                           
