@@ -11,14 +11,14 @@ shinyServer(function(input, output) {
     opendf = data.frame(
       Title = UsChinaFiltered$Title,
       Domestic_Opening = UsChinaFiltered$Domestic.Opening,
-      Chinese_Opening = UsChinaFiltered$Chinese.Opening
+      "Chinese_Opening" = UsChinaFiltered$Chinese.Opening
     )
     
     gvisBarChart(
       opendf,
       xvar = "Title",
       yvar = c("Domestic_Opening", "Chinese_Opening"),
-      options = list(title = "Opening in Millions", height =
+      options = list(title = "Opening Weekend in Millions($)", height =
                        500)
     )
   })
@@ -60,7 +60,7 @@ shinyServer(function(input, output) {
       data = percpie,
       labelvar = "OverseasTotalRegion",
       numvar = "sum.OverseasFactor.",
-      options = list(title = "Percentage of Total Gross per Year \n Values in Millions", height = 500)
+      options = list(title = "Percentage of Total Gross per Year \n Values in Millions($)", height = 500)
     )
     
   })
@@ -90,7 +90,7 @@ shinyServer(function(input, output) {
       data = percpieoverseas,
       labelvar = "OverseasTotalRegion",
       numvar = "sum.OverseasFactor.",
-      options = list(title = "Percentage of Overseas Gross per Year \n Values in Millions", height = 500)
+      options = list(title = "Percentage of Overseas Gross per Year \n Values in Millions($)", height = 500)
     )
   })
   
@@ -117,22 +117,25 @@ shinyServer(function(input, output) {
     
     
     
-    gvisLineChart(ns, )
+    gvisLineChart(ns)
+  })
+  
+  output$StatChart <- renderGvis({
+    gvisLineChart(cs,options=list(
+      explorer="{actions: ['dragToZoom','rightClickToReset'],maxZoomIn:0.05}",
+      chartArea="{width:'85%',height:'80%'}",
+      hAxis="{title: 'YEAR', titleTextStyle: {color: '#000000'}}",
+      vAxis="{title: 'COUNT',titleTextStyle: {color: '#000000'}}",
+      title="Number of Films by Genre",
+      width=750, height=300,
+      legend="none"),
+      chartid="ZoomZoom")
   })
   
   output$ScatterChart <- renderPlotly({
     UsChinaCompare2 = tbl_df(UsChinaCompare2)
     
     UsChinaCompare2$Region = as.factor(UsChinaCompare2$Region)
-    
-    # p = UsChinaCompare2 %>%
-    #   arrange(Return) %>%
-    #   select(Title, Region, Return, Domestic_Returns, China_Returns) %>% 
-    #   ggplot(aes(x = Title, y = Return)) + geom_point(aes(color=Region)) 
-    #   
-    #   g = ggplotly(p,tooltip = "text")
-    #   
-    #    style(g, text = c(UsChinaCompare2$Title,UsChinaCompare2$Domestic_Returns,UsChinaCompare2$China_Returns))
    
     plot_ly(data = UsChinaCompare2,
             x = ~Title,
@@ -144,7 +147,8 @@ shinyServer(function(input, output) {
             text = ~paste(Title,
                           '</br></br>Region: ', Region,
                           '</br>Domestic Returns: ', Domestic_Returns,
-                          '</br>Chinese Returns: ', China_Returns)) %>%
+                          '</br>Chinese Returns: ', China_Returns,
+                          '</br>Worldwide Returns: ', Total_Worldwide_Gross)) %>%
            layout(xaxis= list(showticklabels = FALSE))
   })
   

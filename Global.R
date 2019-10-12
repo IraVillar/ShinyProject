@@ -11,6 +11,18 @@ library(shinydashboard)
 library(plotly)
 
 
+# Chinese Stats Cleaning ####
+
+cs = read.csv("ChineseStats.csv",stringsAsFactors = FALSE)
+cs = cs %>% select (-Index)
+cs = data.frame(cs)
+cs = cs %>% select(-2018)
+cs = t(cs)
+cs = data.frame(cs) %>%
+  filter(Indicators != is.na(Indicators)) %>%
+  arrange(Indicators)
+class(cs)
+
 
 
 # Number of Screens Cleaning ####
@@ -136,10 +148,7 @@ UsChinaAlltime = UsChinaAlltime %>%
 UsChinaAlltime2 = UsChinaAlltime %>% 
   gather(key = "OverseasTotalRegion",value ="Overseasfactor",China,all_other_overseas_gross ) %>% 
   filter(Overseasfactor != is.na(Overseasfactor))
-  
- 
 
-UsChinaAlltime
 UsChinaAlltime2  %>% 
   select(Title, Year,Total_Worldwide_Gross,Domestic,OverseasTotalRegion,Overseasfactor,Overseas) %>%
   group_by(Year) %>%
@@ -166,7 +175,7 @@ UsChinaCompare2 = UsChinaCompare %>%
 
 
 # temp %>% 
-#   filter(OverseasTotalRegion == "Total_Chinese_Gross") %>% 
+#   filter(OverseasTotalRegion == "China") %>% 
 #   select(Overseasfactor) ->ChineseMean
 #   
 # temp %>% 

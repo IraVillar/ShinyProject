@@ -10,6 +10,7 @@ shinyUI(
                                          menuItem("Pie Charts",tabName = "Pie",icon=icon("chart-pie")),
                                          menuItem("Line Charts",tabName = "LineChart",icon=icon("chart-line")),
                                          menuItem("Scatter Charts",tabName = "Scatter",icon=icon("dot-circle")),
+                                         menuItem("Statistics",tabName = "Stats",icon=icon("table")),
                                          menuItem("Conclusion",tabName = "Conclusion",icon=icon("film"))
                                          )),                                       
                 
@@ -74,15 +75,17 @@ shinyUI(
                                   ),
                           
                           tabItem(tabName = "Scatter",
-                                  h3("US and China All Time Returns per Film"),
+                                  h3("US and China All Time Returns per Film - Value in Millions ($)"),
                                   h5("Return of '1' means no information was available"),
                                   plotlyOutput("ScatterChart")
                                   ),
                           
                                   
+                          tabItem(tabName = "Stats",
+                                  h3("Some Statistics on the Chinese Film Industry"),
+                                  fluidRow(htmlOutput("StatChart"))
                                   
-                                  
-                                
+                                  ),
                           
                           tabItem(tabName = "Conclusion",
                                   h1("Conclusion", align = "center"),
