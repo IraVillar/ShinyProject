@@ -9,7 +9,7 @@ library(DT)
 library(lubridate)
 library(shinydashboard)
 library(plotly)
-library(gapminder)
+
 
 
 
@@ -29,15 +29,15 @@ ns$Number.of.screens[ns$Year == 2012] = ((ns$Number.of.screens[ns$Year == 2011] 
 co = read.csv("ChinaOpening.csv",stringsAsFactors = FALSE)
 co = tbl_df(co)
 co %>% 
-  select(Title = Movie.Title, Chinese.Opening = Opening, everything(),percent_of_total = X..of.Total, Total_Chinese_Gross = Total.Gross) -> co
+  select(Title = Movie.Title, Chinese.Opening = Opening, everything(),percent_of_total = X..of.Total, China = Total.Gross) -> co
 
-co$Total_Chinese_Gross = Total_Chinese_Gross = as.numeric(gsub("[\\$,]", "", co$Total_Chinese_Gross))
+co$China = China = as.numeric(gsub("[\\$,]", "", co$China))
 co$Chinese.Opening = Chinese.Opening = as.numeric(gsub("[\\$,]", "", co$Chinese.Opening))
 co$percent_of_total = percent_of_total = as.numeric(gsub("[[:punct:]]","",co$percent_of_total))
 
 co %>% 
   mutate(Chinese.Opening = Chinese.Opening /1000000) %>% 
-  mutate(Total_Chinese_Gross = Total_Chinese_Gross/1000000) %>% 
+  mutate(China = China/1000000) %>% 
   mutate(percent_of_total = percent_of_total/10) -> co
 
 
@@ -118,24 +118,25 @@ UsChina %>%
 UsChina = tbl_df(UsChina)
 UsChina %>% 
   select(Rank = Rank.x,everything()) %>%
-  filter(Total_Chinese_Gross != is.na(Total_Chinese_Gross)) -> UsChina
+  filter(China != is.na(China)) -> UsChina
 
 
 # Overall Comparison ####
 
-UsChinaAlltime <- merge(x=Worldwide.Alltime,y=co,by="Title",all.x=TRUE, na.rm = TRUE)
+UsChinaAlltime <- merge(x=Worldwide.Alltime,y=co,by="Title",all=TRUE, na.rm = TRUE)
 
 UsChinaAlltime %>% 
-  filter(Chinese.Opening != is.na(Chinese.Opening)) %>% 
+  mutate(China = ifelse(is.na(China),1,China)) %>% 
   select(Rank = Rank.x,-Rank.y,everything()) -> UsChinaAlltime
 
 UsChinaAlltime = tbl_df(UsChinaAlltime)
 UsChinaAlltime = UsChinaAlltime %>% 
-  mutate(all_other_overseas_gross = Total_Worldwide_Gross - (Total_Chinese_Gross + Domestic))
+  mutate(all_other_overseas_gross = Total_Worldwide_Gross - (China + Domestic))
 
 UsChinaAlltime2 = UsChinaAlltime %>% 
-  gather(key = "OverseasTotalRegion",value ="Overseasfactor",Total_Chinese_Gross,all_other_overseas_gross ) %>% 
+  gather(key = "OverseasTotalRegion",value ="Overseasfactor",China,all_other_overseas_gross ) %>% 
   filter(Overseasfactor != is.na(Overseasfactor))
+  
  
 
 UsChinaAlltime
@@ -143,29 +144,25 @@ UsChinaAlltime2  %>%
   select(Title, Year,Total_Worldwide_Gross,Domestic,OverseasTotalRegion,Overseasfactor,Overseas) %>%
   group_by(Year) %>%
   mutate(TWGperYear = sum(Total_Worldwide_Gross)) %>% 
+  filter(Domestic != is.na(Domestic)) %>% 
   group_by(Year, OverseasTotalRegion, TWGperYear)-> temp
 temp = tbl_df(temp)
 
 UsChinaAlltime %>%
-  select(-Rank.y) -> UsChinaCompare
-  
-
-
-UsChinaCompare %>% 
-  group_by(Year) %>% 
-  filter(Year %in% c(2006:2019)) %>% 
-  mutate(Domestic_Total = sum(Domestic)) %>%
-  mutate(Chinese_Total = sum(Total_Chinese_Gross)) %>% 
-  filter(Domestic_Total != is.na(Domestic_Total)) %>%
-  arrange(Year) %>% 
-  select(Year,Domestic_Total,Chinese_Total)
+  select(-Rank.y) %>% 
+  filter(Domestic != is.na(Domestic)) -> UsChinaCompare
 
 UsChinaCompare = UsChinaCompare %>% 
   mutate(Domestic_Returns = Domestic) %>% 
-  mutate(China_Returns = Total_Chinese_Gross)
+  mutate(China_Returns = China)
+
+UsChinaCompare$China_Returns = as.numeric(UsChinaCompare$China_Returns)
+UsChinaCompare$China_Returns = sprintf(UsChinaCompare$China_Returns, fmt = '%#.2f')
+
 
 UsChinaCompare2 = UsChinaCompare %>% 
-  gather(key = "Region", value = "Return", Total_Chinese_Gross, Domestic) 
+  gather(key = "Region", value = "Return", China, Domestic) %>% 
+  arrange(desc(China_Returns))
 
 
 # temp %>% 

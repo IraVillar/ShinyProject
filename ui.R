@@ -45,8 +45,8 @@ shinyUI(
                           
                           tabItem(tabName = "Pie",
                                   
-                                  sliderInput("select", label = h3("Select Year"), min = 2006, 
-                                              max = 2019, value = 2006),
+                                  sliderInput("select", label = h3("Select Year"), min = 1990, 
+                                              max = 2019, value = 1990),
                                   
                                   fluidRow( column(6, htmlOutput("PieChart")),
                                             column(6, htmlOutput("PieChartOverseas"))),
@@ -61,19 +61,21 @@ shinyUI(
                                   fluidRow(
                                     
                                     column(6,
-                                           sliderInput("YearRange", label = h3("Year Range\n for US/China Comparison"), min = 2006, 
-                                                       max = 2019, value = c(2006, 2019))
+                                           sliderInput("YearRange", label = h3("Year Range\n for US/China Yearly Gross - Comparison"), min = 1990, 
+                                                       max = 2019, value = c(1990, 2019))
                                     ),
                                     column(6,
-                                           sliderInput("CinemaRange",label=h3("Year Range\n for Number of Cinemas"), min =2005,
+                                           sliderInput("CinemaRange",label=h3("Year Range\n for Number of Screens in China"), min =2005,
                                                        max = 2019, value = c(2005, 2019)))
                                   ),
-                                  fluidRow(column(5, htmlOutput("Line")),
-                                           column(5, htmlOutput("CinemaLine")))
+                                  fluidRow(column(8, htmlOutput("Line")),
+                                          column(8,htmlOutput("CinemaLine")))
                                   
                                   ),
                           
                           tabItem(tabName = "Scatter",
+                                  h3("US and China All Time Returns per Film"),
+                                  h5("Return of '1' means no information was available"),
                                   plotlyOutput("ScatterChart")
                                   ),
                           

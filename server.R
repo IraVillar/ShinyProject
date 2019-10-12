@@ -37,7 +37,7 @@ shinyServer(function(input, output) {
     chinaoverall_df = temp %>%
       group_by(Year, OverseasTotalRegion) %>%
       filter(Year == input$select) %>%
-      filter(OverseasTotalRegion == "Total_Chinese_Gross") %>%
+      filter(OverseasTotalRegion == "China") %>%
       summarise(sum(Overseasfactor))
     
     overseas_others_df = temp %>%
@@ -69,7 +69,7 @@ shinyServer(function(input, output) {
     chinaoverall_df = temp %>%
       group_by(Year, OverseasTotalRegion) %>%
       filter(Year == input$select) %>%
-      filter(OverseasTotalRegion == "Total_Chinese_Gross") %>%
+      filter(OverseasTotalRegion == "China") %>%
       summarise(sum(Overseasfactor))
     
     overseas_others_df = temp %>%
@@ -99,7 +99,7 @@ shinyServer(function(input, output) {
       group_by(Year) %>%
       filter(Year %in% c(input$YearRange[1]:input$YearRange[2])) %>%
       mutate(Domestic_Total = sum(Domestic)) %>%
-      mutate(Chinese_Total = sum(Total_Chinese_Gross)) %>%
+      mutate(Chinese_Total = sum(China)) %>%
       filter(Domestic_Total != is.na(Domestic_Total)) %>%
       arrange(Year) %>%
       select(Year, Domestic_Total, Chinese_Total)
@@ -125,14 +125,27 @@ shinyServer(function(input, output) {
     
     UsChinaCompare2$Region = as.factor(UsChinaCompare2$Region)
     
-    p = UsChinaCompare2 %>%
-      arrange(Return) %>%
-      select(Title, Region, Return,Domestic_Returns,China_Returns) %>% 
-      ggplot(aes(x = Title, y = Return)) + geom_point(aes(color=Region))
-      
-      ggplotly(p)
-      #p, tooltip = "text"
-      # style(g, text = UsChinaCompare2$Title)
+    # p = UsChinaCompare2 %>%
+    #   arrange(Return) %>%
+    #   select(Title, Region, Return, Domestic_Returns, China_Returns) %>% 
+    #   ggplot(aes(x = Title, y = Return)) + geom_point(aes(color=Region)) 
+    #   
+    #   g = ggplotly(p,tooltip = "text")
+    #   
+    #    style(g, text = c(UsChinaCompare2$Title,UsChinaCompare2$Domestic_Returns,UsChinaCompare2$China_Returns))
+   
+    plot_ly(data = UsChinaCompare2,
+            x = ~Title,
+            y = ~Return,
+            type = "scatter",
+            color = ~Region,
+            colors = "RdYlBu",
+            hoverinfo = 'text',
+            text = ~paste(Title,
+                          '</br></br>Region: ', Region,
+                          '</br>Domestic Returns: ', Domestic_Returns,
+                          '</br>Chinese Returns: ', China_Returns)) %>%
+           layout(xaxis= list(showticklabels = FALSE))
   })
   
   
