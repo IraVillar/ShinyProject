@@ -28,7 +28,7 @@ shinyUI(
                           
                           
                           tabItem(tabName="AboutMe",
-                                  h1("Author Page", align = "center"),
+                                  h1("Author", align = "center"),
                                   HTML('<center><img src="iraheadshot.png"></center>'),
                                   htmlOutput("abouttext"),
                                     
@@ -54,8 +54,8 @@ shinyUI(
                           
                           tabItem(tabName = "Pie",
                                   
-                                  sliderInput("select", label = h3("Select Year"), min = 1990, 
-                                              max = 2018, value = 1990),
+                                  sliderInput("select", label = h3("Select Year"), min = 2000, 
+                                              max = 2018, value = 2000),
                                   
                                   fluidRow( column(6, htmlOutput("PieChart")),
                                             column(6, htmlOutput("PieChartOverseas"))),
