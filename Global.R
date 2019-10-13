@@ -168,6 +168,7 @@ UsChinaAlltime %>%
   filter(Domestic != is.na(Domestic)) -> UsChinaCompare
 
 UsChinaCompare = UsChinaCompare %>% 
+  mutate(Year = as.character(Year)) %>% 
   mutate(Domestic_Returns = Domestic) %>% 
   mutate(China_Returns = China)
 
@@ -182,19 +183,29 @@ UsChinaCompare2 = UsChinaCompare %>%
 UsChinaCompare3 = UsChinaCompare %>% 
   select(Title,Total_Worldwide_Gross,Domestic_Returns,Overseas,China_Returns)
 
+# Statistics portion ####
 
-# temp %>% 
-#   filter(OverseasTotalRegion == "China") %>% 
-#   select(Overseasfactor) ->ChineseMean
-#   
-# temp %>% 
-#   filter(OverseasTotalRegion=="all_other_overseas_gross") %>% 
-#   select(Overseasfactor)-> OverseasMean
-# 
-# OverseasMean = as.vector(OverseasMean$Overseasfactor)
-# ChineseMean = as.vector(ChineseMean$Overseasfactor)
-#   
-# t.test(ChineseMean,OverseasMean,alternative = "two.sided")
+temp %>%
+  filter(OverseasTotalRegion == "China") %>%
+  filter(Overseasfactor != 1) %>% 
+  select(Overseasfactor) ->ChineseMean
+
+temp %>%
+  filter(OverseasTotalRegion=="all_other_overseas_gross") %>%
+  select(Overseasfactor)-> OverseasMean
+
+temp %>%
+  select(Domestic) -> DomesticMean
+
+OverseasMean = as.vector(OverseasMean$Overseasfactor)
+ChineseMean = as.vector(ChineseMean$Overseasfactor)
+DomesticMean = as.matrix(DomesticMean)
+
+t.test(ChineseMean,OverseasMean,alternative = "two.sided")
+t.test(ChineseMean,DomesticMean,alternative = "two.sided")
+
+plot(density(ChineseMean),col="red")
+lines(density(DomesticMean),col="blue")
 
 
 

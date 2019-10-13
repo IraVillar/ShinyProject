@@ -55,7 +55,7 @@ shinyUI(
                           tabItem(tabName = "Pie",
                                   
                                   sliderInput("select", label = h3("Select Year"), min = 1990, 
-                                              max = 2019, value = 1990),
+                                              max = 2018, value = 1990),
                                   
                                   fluidRow( column(6, htmlOutput("PieChart")),
                                             column(6, htmlOutput("PieChartOverseas"))),
@@ -71,11 +71,11 @@ shinyUI(
                                     
                                     column(6,
                                            sliderInput("YearRange", label = h3("Year Range\n for US/China Yearly Gross - Comparison"), min = 1990, 
-                                                       max = 2019, value = c(1990, 2019))
+                                                       max = 2018, value = c(1990, 2018))
                                     ),
                                     column(6,
                                            sliderInput("CinemaRange",label=h3("Year Range\n for Number of Screens in China"), min =2005,
-                                                       max = 2019, value = c(2005, 2019)))
+                                                       max = 2017, value = c(2005, 2017)))
                                   ),
                                   fluidRow(column(8, htmlOutput("Line")),
                                           column(8,htmlOutput("CinemaLine")))
@@ -86,13 +86,15 @@ shinyUI(
                                   h3("US and China All Time Returns per Film - Value in Millions ($)"),
                                   h5("Return of '1' means no information was available"),
                                   plotlyOutput("ScatterChart"),
+                                  h3("Search for a Particular Film:"),
                                   fluidRow(column(6, DT::dataTableOutput("table2")))
                                   ),
                           
                                   
                           tabItem(tabName = "Stats",
                                   h3("Some Statistics on the Chinese Film Industry"),
-                                  fluidRow(column(6, DT::dataTableOutput("table"))),
+                                  h4("Locally produced films"),
+                                  # fluidRow(column(6, DT::dataTableOutput("table"))),
                                   fluidRow(htmlOutput("StatChart"))
                                   
                                   
