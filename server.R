@@ -2,12 +2,34 @@
 
 
 shinyServer(function(input, output) {
+  
+  url <- a("LinkedIn", href="https://www.linkedin.com/in/ira-villar-3364514a/")
+  url2 <- a("GitHub", href="https://github.com/IraVillar")
+  output$LItab <- renderUI({
+    tagList(url)})
+  output$gittab <- renderUI({
+    tagList(url2)})
+  
+  output$closingtext <- renderUI({
+    HTML(paste('<br/><br/> This is the closing text.'))
+    
+  })
+  output$openingtext <- renderUI({
+    HTML(paste('<p align="center"><br/><br/>This is a sentence.</p>'))
+    
+  })
+  output$abouttext <- renderUI({
+    HTML(paste("<br/><br/><i>Ira Villar is a Data Science Fellow at the NYC Data Science Academy. 
+               He uses his 10 years of experience in the film industry to dissect and analyze the current trend of
+               studios trying to appeal their films to China.</i><br/><br/>"))
+  })
+  
   output$BarChart <- renderGvis({
     UsChina %>%
       filter(Studio == input$studio) %>%
       arrange(-Worldwide.Opening) %>%
       slice(1:9) -> UsChinaFiltered
-    
+      
     opendf = data.frame(
       Title = UsChinaFiltered$Title,
       Domestic_Opening = UsChinaFiltered$Domestic.Opening,
@@ -18,7 +40,7 @@ shinyServer(function(input, output) {
       opendf,
       xvar = "Title",
       yvar = c("Domestic_Opening", "Chinese_Opening"),
-      options = list(title = "Opening Weekend in Millions($)", height =
+      options = list(legend = "none", title = "Opening Weekend in Millions($)", height =
                        500)
     )
   })
@@ -60,7 +82,7 @@ shinyServer(function(input, output) {
       data = percpie,
       labelvar = "OverseasTotalRegion",
       numvar = "sum.OverseasFactor.",
-      options = list(title = "Percentage of Total Gross per Year \n Values in Millions($)", height = 500)
+      options = list(legend = "none", title = "Percentage of Total Gross per Year \n Values in Millions($)", height = 500)
     )
     
   })
@@ -90,7 +112,7 @@ shinyServer(function(input, output) {
       data = percpieoverseas,
       labelvar = "OverseasTotalRegion",
       numvar = "sum.OverseasFactor.",
-      options = list(title = "Percentage of Overseas Gross per Year \n Values in Millions($)", height = 500)
+      options = list(legend = "none", title = "Percentage of Overseas Gross per Year \n Values in Millions($)", height = 500)
     )
   })
   
@@ -108,7 +130,7 @@ shinyServer(function(input, output) {
       Year = (UsChinaCompare$Year),
       DomesticTotal = (UsChinaCompare$Domestic_Total),
       ChineseTotal = (UsChinaCompare$Chinese_Total)
-    ), )
+    ),options=list(legend="none") )
   })
   output$CinemaLine <- renderGvis({
     ns = ns %>%
@@ -117,7 +139,7 @@ shinyServer(function(input, output) {
     
     
     
-    gvisLineChart(ns)
+    gvisLineChart(ns,options=list(legend="none"))
   })
   
   output$StatChart <- renderGvis({
@@ -135,6 +157,8 @@ shinyServer(function(input, output) {
   output$table <- DT::renderDataTable({
     datatable(cs) 
   })
+  output$table2 <- DT::renderDataTable({
+    datatable(UsChinaCompare3) })
    
   output$ScatterChart <- renderPlotly({
     UsChinaCompare2 = tbl_df(UsChinaCompare2)

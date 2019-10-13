@@ -5,12 +5,12 @@ shinyUI(
                       dashboardSidebar(sidebarUserPanel(""),
                                        sidebarMenu(
                                          menuItem("About the Project", tabName = "AbouttheProject",icon=icon("info-circle")),
-                                         menuItem("About Me",tabName="AboutMe",icon=icon("address-card")),
+                                         menuItem("Author Page",tabName="AboutMe",icon=icon("address-card")),
                                          menuItem("Statistics",tabName = "Stats",icon=icon("table")),
-                                         menuItem("Pie Charts",tabName = "Pie",icon=icon("chart-pie")),
-                                         menuItem("Bar Chart",tabName = "Bar",icon=icon("database")),
-                                         menuItem("Line Charts",tabName = "LineChart",icon=icon("chart-line")),
-                                         menuItem("Scatter Charts",tabName = "Scatter",icon=icon("dot-circle")),
+                                         menuItem("Overall Percentages",tabName = "Pie",icon=icon("chart-pie")),
+                                         menuItem("Opening Comparison",tabName = "Bar",icon=icon("database")),
+                                         menuItem("Trends Over Time",tabName = "LineChart",icon=icon("chart-line")),
+                                         menuItem("Returns per Film",tabName = "Scatter",icon=icon("dot-circle")),
                                          menuItem("Conclusion",tabName = "Conclusion",icon=icon("film"))
                                          )),                                       
                 
@@ -19,15 +19,23 @@ shinyUI(
                           tabItem(tabName="AbouttheProject",
                                   h1("Hollywood Movies and China", align = "center"),
                                   
-                                  fluidRow(img(src='ManwatchingTv.jpg',width="310",height="180", align = "center")),
+                                  HTML('<center><img src="GreatWall.jpg" width="400"></center>'),
                                   
-                                  p("\n\tThis is a sentence.", align = "center")),
+                                  htmlOutput("openingtext")
+                                  
+                                  
+                                  ),
                           
                           
                           tabItem(tabName="AboutMe",
-                                  h1("About Me", align = "center"),
-                                  fluidRow(img(src="")),
-                                  p("Ira is Ira Villar",align="center")),
+                                  h1("Author Page", align = "center"),
+                                  HTML('<center><img src="iraheadshot.png"></center>'),
+                                  htmlOutput("abouttext"),
+                                    
+                                    fluidRow( img(src="LinkedInLogo.png", height ="5%", width = "5%"), uiOutput("LItab"),
+                                    img(src="githublogo.svg", height="5%", width = "5%"), uiOutput("gittab"),align="center")
+                                    
+                                    ),
                                   
                           
                           tabItem(tabName="Bar",
@@ -77,7 +85,8 @@ shinyUI(
                           tabItem(tabName = "Scatter",
                                   h3("US and China All Time Returns per Film - Value in Millions ($)"),
                                   h5("Return of '1' means no information was available"),
-                                  plotlyOutput("ScatterChart")
+                                  plotlyOutput("ScatterChart"),
+                                  fluidRow(column(6, DT::dataTableOutput("table2")))
                                   ),
                           
                                   
@@ -92,8 +101,8 @@ shinyUI(
                           
                           tabItem(tabName = "Conclusion",
                                   h1("Conclusion", align = "center"),
-                                  
-                                  p("This is the conclusion")
+                                  HTML('<center><img src="WorldMap.jpg" width="400"></center>'),
+                                  htmlOutput("closingtext")
                                   
                                   )
                           

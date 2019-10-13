@@ -179,6 +179,9 @@ UsChinaCompare2 = UsChinaCompare %>%
   gather(key = "Region", value = "Return", China, Domestic) %>% 
   arrange(desc(China_Returns))
 
+UsChinaCompare3 = UsChinaCompare %>% 
+  select(Title,Total_Worldwide_Gross,Domestic_Returns,Overseas,China_Returns)
+
 
 # temp %>% 
 #   filter(OverseasTotalRegion == "China") %>% 
