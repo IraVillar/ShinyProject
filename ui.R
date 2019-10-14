@@ -94,7 +94,7 @@ shinyUI(
                                   
                           tabItem(tabName = "Stats",
                                   h2("Some Statistics on the Chinese Film Industry"),
-                                  h3("- Locally produced films"),
+                    
                                   h6("(Drag to Zoom, Right-click to Reset.)"),
                                   
                             

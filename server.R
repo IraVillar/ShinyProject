@@ -215,7 +215,7 @@ shinyServer(function(input, output) {
       chartArea="{width:'85%',height:'80%'}",
       hAxis="{title: 'YEAR', titleTextStyle: {color: '#000000'}}",
       vAxis="{title: 'COUNT',titleTextStyle: {color: '#000000'}}",
-      title="Number of Films by Genre",
+      title="Number of Locally Produced Films by Genre",
       width=750, height=300,
       legend="none", gvis.editor="Edit me!"),
       chartid="ZoomZoom")
