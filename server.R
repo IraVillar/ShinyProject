@@ -39,6 +39,56 @@ shinyServer(function(input, output) {
                studios trying to appeal their films to China.</i><br/><br/>"))
   })
   
+  
+  
+  output$maxBox <- renderInfoBox({
+    
+    UsChina %>%
+      filter(Studio == input$studio) %>%
+      arrange(-Worldwide.Opening) %>%
+      mutate(Title = as.character(Title)) %>%
+      slice(1:9) -> UsChinaFiltered
+    
+    opendf = data.frame(
+      Title = UsChinaFiltered$Title,
+      Domestic_Opening = UsChinaFiltered$Domestic.Opening,
+      Chinese_Opening = UsChinaFiltered$Chinese.Opening
+    )
+    max_value <- max(max(opendf$Domestic_Opening),max(opendf$Chinese_Opening))
+    max_state <- ifelse(max(opendf$Domestic_Opening) < max(opendf$Chinese_Opening), "CHINA", "US")
+    max_film <- if(max_state=="CHINA"){
+      opendf$Title[opendf$Chinese_Opening == max_value]
+    } else {
+      opendf$Title[opendf$Domestic_Opening == max_value]
+    } 
+    infoBox(max_state, max_value, max_film, icon = icon("hand-o-up"),color="light-blue",fill = TRUE)
+  })
+  
+  output$minBox <- renderInfoBox({
+    
+    UsChina %>%
+      filter(Studio == input$studio ) %>%
+      arrange(-Worldwide.Opening) %>%
+      mutate(Title = as.character(Title)) %>% 
+      slice(1:9) -> UsChinaFiltered
+    
+    opendf = data.frame(
+      Title = as.character(UsChinaFiltered$Title),
+      Domestic_Opening = UsChinaFiltered$Domestic.Opening,
+      Chinese_Opening = UsChinaFiltered$Chinese.Opening
+    )
+    
+    min_value <- min(min(opendf$Domestic_Opening),min(opendf$Chinese_Opening))
+    min_state <- ifelse(min(opendf$Domestic_Opening) > min(opendf$Chinese_Opening), "CHINA", "US")
+    min_film <- if(min_state=="CHINA"){
+      opendf$Title[opendf$Chinese_Opening == min_value]
+    } else {
+      opendf$Title[opendf$Domestic_Opening == min_value]
+      } 
+    infoBox(min_state, min_value, min_film, icon = icon("hand-o-down"),color="navy",fill = TRUE)
+  })
+  
+  
   output$BarChart <- renderGvis({
     UsChina %>%
       filter(Studio == input$studio) %>%
@@ -48,14 +98,14 @@ shinyServer(function(input, output) {
     opendf = data.frame(
       Title = UsChinaFiltered$Title,
       Domestic_Opening = UsChinaFiltered$Domestic.Opening,
-      "Chinese_Opening" = UsChinaFiltered$Chinese.Opening
+      Chinese_Opening = UsChinaFiltered$Chinese.Opening
     )
     
     gvisBarChart(
       opendf,
       xvar = "Title",
       yvar = c("Domestic_Opening", "Chinese_Opening"),
-      options = list(legend = "none", title = "Opening Weekend in Millions($)", height =
+      options = list(legend = "none", title = "Top Opening Weekends in Millions($)", height =
                        500)
     )
   })

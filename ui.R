@@ -1,7 +1,7 @@
 
 
 shinyUI(
-  dashboardPage(skin="purple", dashboardHeader(title="Hollywood Movies and China", titleWidth = "350"),
+  dashboardPage(skin="purple", dashboardHeader(title="Hollywood Films and China", titleWidth = "350"),
                       dashboardSidebar(sidebarUserPanel(""),
                                        sidebarMenu(
                                          menuItem("About the Project", tabName = "AbouttheProject",icon=icon("info-circle")),
@@ -17,7 +17,7 @@ shinyUI(
                       dashboardBody(
                         tabItems(
                           tabItem(tabName="AbouttheProject",
-                                  h1("Hollywood Movies and China", align = "center"),
+                                  h1("Hollywood Films and China", align = "center"),
                                   
                                   HTML('<center><img src="GreatWall.jpg" width="400"></center>'),
                                   
@@ -46,6 +46,7 @@ shinyUI(
                                                              "Paramount" = "Par.",
                                                              "20th Century Fox" = "Fox",
                                                              "Sony" = "Sony"),selected = "BV"), 
+                                  fluidRow(infoBoxOutput("maxBox", width = 6), infoBoxOutput("minBox",width = 6)),
                                   
                                   fluidRow(htmlOutput("BarChart"))
                                                   
@@ -94,7 +95,8 @@ shinyUI(
                           tabItem(tabName = "Stats",
                                   h3("Some Statistics on the Chinese Film Industry"),
                                   h4("Locally produced films"),
-                                  # fluidRow(column(6, DT::dataTableOutput("table"))),
+                                  
+                            
                                   fluidRow(htmlOutput("StatChart"))
                                   
                                   
