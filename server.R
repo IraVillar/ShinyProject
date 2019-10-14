@@ -15,21 +15,23 @@ shinyServer(function(input, output) {
               For the purpose of this project, We would also want to find the statistical significance between China and the rest of the overseas returns,
                but without individual data per country, it would be unfair. The next best option would be to see the significance between
                US and China returns. <br/><br/> <p align="center"><img src="DensityCharts.png", width = "40%"><br/>
-               <font size="1"><i>DENSITY CHART: China returns are colored RED while US returns are in BLUE<br/>
-              <br/> <img src="Ttests.png", height = "50%", width="50%"></br>A two sampled T-test shows that their means are significantly different.</font></i></p><br/>
+               <font size="1"><i>DENSITY CHART: China returns are colored RED while US returns are in BLUE.<br/>
+              A two sampled T-test was also performed to show that their means are significantly different.</font></i></p><br/>
               While in general, China box office numbers are still lower, we cannot deny that it is growing. It does not hurt that some films even 
               earn more in China. If it means that Hollywood films become more inclusive of other nations and cultures,
               there is no harm in watching this trend continue.<br/><br/><br/>
                <p align="right"><i>"China is a sleeping giant. Let her sleep, for when she wakes she will move the world."<br/>
                - Napoleon Bonaparte</i></p><br/><br/><br/>'))
+    # <img src="Ttests.png", height = "50%", width="50%"></br> <- removed boring t-test image.
     
   })
   output$openingtext <- renderUI({
     HTML(paste('<p align="center"><br/><br/>There has been a recent trend of Hollywood films shying away from the
                traditional western narrative and beginning to embrace diversity of cultures. This globalization can 
-               be seen in films such as The Meg, Crazy Rich Asians, The Martian, Now You See Me 2, The Transformers films, etc.
+               be seen in films such as The Meg, Crazy Rich Asians, The Martian, Pacific Rim: Uprising, The Transformers films, etc.
                 This study aims to explore the growing overseas box office returns, particularly with one of the 
-               fastest rising film markets today, China. </p>'))
+               fastest rising film markets today, China.
+               <br/><br/><font size="2"><i>(NOTE: Hover mouse for data in all graphs.)</i></font></p>'))
     
   })
   output$abouttext <- renderUI({

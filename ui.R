@@ -93,8 +93,9 @@ shinyUI(
                           
                                   
                           tabItem(tabName = "Stats",
-                                  h3("Some Statistics on the Chinese Film Industry"),
-                                  h4("Locally produced films"),
+                                  h2("Some Statistics on the Chinese Film Industry"),
+                                  h3("- Locally produced films"),
+                                  h6("(Drag to Zoom, Right-click to Reset.)"),
                                   
                             
                                   fluidRow(htmlOutput("StatChart"))
