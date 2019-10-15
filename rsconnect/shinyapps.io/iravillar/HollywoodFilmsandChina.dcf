@@ -5,8 +5,8 @@ account: iravillar
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 1323664
-bundleId: 2499851
+bundleId: 2500733
 url: https://iravillar.shinyapps.io/HollywoodFilmsandChina/
-when: 1571080185.009
+when: 1571108372.28193
 asMultiple: FALSE
 asStatic: FALSE

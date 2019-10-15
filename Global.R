@@ -178,7 +178,7 @@ UsChinaCompare$China_Returns = sprintf(UsChinaCompare$China_Returns, fmt = '%#.2
 
 UsChinaCompare2 = UsChinaCompare %>% 
   gather(key = "Region", value = "Return", China, Domestic) %>% 
-  arrange(desc(China_Returns))
+  arrange(desc(Year))
 
 UsChinaCompare3 = UsChinaCompare %>% 
   select(Title,Total_Worldwide_Gross,Domestic_Returns,Overseas,China_Returns)

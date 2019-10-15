@@ -26,12 +26,14 @@ shinyServer(function(input, output) {
     
   })
   output$openingtext <- renderUI({
-    HTML(paste('<p align="center"><br/><br/>There has been a recent trend of Hollywood films shying away from the
+    HTML(paste('<p align="center"><br/>
+                <font size="2"><i>(NOTE: Hover mouse for data in all graphs.)</i></font>
+                <br/><br/>There has been a recent trend of Hollywood films shying away from the
                traditional western narrative and beginning to embrace diversity of cultures. This globalization can 
                be seen in films such as The Meg, Crazy Rich Asians, The Martian, Pacific Rim: Uprising, The Transformers films, etc.
                 This study aims to explore the growing overseas box office returns, particularly with one of the 
                fastest rising film markets today, China.
-               <br/><br/><font size="2"><i>(NOTE: Hover mouse for data in all graphs.)</i></font></p>'))
+               <br/><br/></p>'))
     
   })
   output$abouttext <- renderUI({
@@ -213,8 +215,8 @@ shinyServer(function(input, output) {
     gvisLineChart(cs,options=list(
       explorer="{actions: ['dragToZoom','rightClickToReset'],maxZoomIn:0.05}",
       chartArea="{width:'85%',height:'80%'}",
-      hAxis="{title: 'YEAR', titleTextStyle: {color: '#000000'}}",
-      vAxis="{title: 'COUNT',titleTextStyle: {color: '#000000'}}",
+      # hAxis="{title: 'YEAR', titleTextStyle: {color: '#000000'}}",
+      # vAxis="{title: 'COUNT',titleTextStyle: {color: '#000000'}}",
       title="Number of Locally Produced Films by Genre",
       width=750, height=300,
       legend="none", gvis.editor="Edit me!"),
